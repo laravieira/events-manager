@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Models\Tag;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class EventController extends Controller
@@ -15,7 +18,7 @@ class EventController extends Controller
     public function index(): View
     {
         return view('events.index', [
-            'events' => Event::all(),
+            'events' => Event::all()->load('country', 'city')
         ]);
     }
 
@@ -24,7 +27,10 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('events.create', [
+            'countries' => Country::all(),
+            'tags' => Tag::all(),
+        ]);
     }
 
     /**
@@ -32,7 +38,17 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-        //
+        if(!$request->hasFile('image'))
+            return back();
+
+        $data = $request->validated();
+//      $data['image'] = Storage::putFile('public/events', $request->file('image'));
+        $data['image'] = $request->file('image')->store('public/events');
+        $data['user_id'] = auth()->id();
+        $data['slug'] = Str::slug($request->name);
+
+        Event::create($data);
+        return to_route('events.index');
     }
 
     /**
