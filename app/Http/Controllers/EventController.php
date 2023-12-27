@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -65,7 +66,11 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        return view('events.edit', [
+            'event' => $event->load('country', 'city', 'tags', 'user'),
+            'countries' => Country::all()->load('cities'),
+            'tags' => Tag::all(),
+        ]);
     }
 
     /**
@@ -73,7 +78,19 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        //
+        $data = $request->validated();
+
+        if($request->hasFile('image')) {
+            Storage::delete($event->image);
+            // $data['image'] = Storage::putFile('public/events', $request->file('image'));
+            $data['image'] = $request->file('image')->store('public/events');
+        }
+
+        $data['slug'] = Str::slug($request->name);
+
+        $event->update($data);
+        $event->tags()->sync($request->tags);
+        return to_route('events.index');
     }
 
     /**
@@ -81,6 +98,9 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        Storage::delete($event->image);
+        $event->tags()->detach();
+        $event->delete();
+        return to_route('events.index');
     }
 }
