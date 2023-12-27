@@ -22,7 +22,8 @@ class UpdateGalleryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'caption' => 'required|string|max:255',
+            'image' => 'nullable|image|max:4096',
         ];
     }
 }

@@ -22,7 +22,8 @@ class StoreGalleryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'caption' => 'required|string|max:255',
+            'image' => 'required|image|max:4096',
         ];
     }
 }
