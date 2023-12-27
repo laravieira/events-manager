@@ -19,7 +19,7 @@ class EventController extends Controller
     public function index(): View
     {
         return view('events.index', [
-            'events' => Event::all()->load('country', 'city', 'tags', 'user')
+            'events' => auth()->user()->events->load('country', 'city', 'tags', 'user')->sortByDesc('start_date'),
         ]);
     }
 
