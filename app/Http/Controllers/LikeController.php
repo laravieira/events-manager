@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Like;
 use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
+use Illuminate\Database\Eloquent\Model;
 
 class LikeController extends Controller
 {
@@ -19,9 +21,17 @@ class LikeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Event $event): Model|false
     {
-        //
+        $like = $event->likes()->where('user_id', auth()->id())->first();
+        if ($like) {
+            $like->delete();
+            return false;
+        } else {
+            return $event->likes()->create([
+                'user_id' => auth()->id(),
+            ]);
+        }
     }
 
     /**

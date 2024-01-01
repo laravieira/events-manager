@@ -24,6 +24,12 @@
                                 </span>
                             @endforeach</p>
                     </div>
+                    <div class="inline-flex rounded-md shadow-sm absolute top-4 right-4" role="group">
+                        <a href="{{ route('events.show', $event->id) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-green-100 hover:text-green-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                    </div>
+
                 </div>
             @empty
                 <div class="col-span-3 flex flex-col gap-4 h-72 justify-center items-center">

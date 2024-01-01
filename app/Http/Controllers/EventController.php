@@ -60,6 +60,9 @@ class EventController extends Controller
     {
         return view('events.show', [
             'event' => $event->load('country', 'city', 'tags', 'user'),
+            'liked' => $event->likes()->where('user_id', auth()->id())->first(),
+            'saved' => $event->savedEvents()->where('user_id', auth()->id())->first(),
+            'joined' => $event->bookings()->where('user_id', auth()->id())->first(),
         ]);
     }
 

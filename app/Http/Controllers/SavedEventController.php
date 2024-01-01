@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\SavedEvent;
 use App\Http\Requests\StoreSavedEventRequest;
 use App\Http\Requests\UpdateSavedEventRequest;
+use Illuminate\Database\Eloquent\Model;
 
 class SavedEventController extends Controller
 {
@@ -19,9 +21,17 @@ class SavedEventController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Event $event): Model|false
     {
-        //
+        $save = $event->savedEvents()->where('user_id', auth()->id())->first();
+        if ($save) {
+            $save->delete();
+            return false;
+        } else {
+            return $event->savedEvents()->create([
+                'user_id' => auth()->id(),
+            ]);
+        }
     }
 
     /**

@@ -5,16 +5,64 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ $event->name }}
             </h2>
-            <div class="inline-flex rounded-md shadow-sm" role="group">
-                <a href="{{ route('events.edit', $event->id) }}" class="flex items-center gap-2 transition-all bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-3 rounded-s-lg border-r">
-                    {{ __('Edit') }}
-                    <i class="fa-solid fa-edit"></i>
-                </a>
-                <a href="{{ route('events.index') }}" class="flex items-center gap-2 transition-all bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3  rounded-e-lg">
+            @auth
+                <div class="inline-flex rounded-md shadow-sm" role="group" x-data="{
+                    liked: @js($liked),
+                    saved: @js($saved),
+                    joined: @js($joined),
+                    onLike() {
+                        axios.get('/api/like/{{ $event->id  }}').then(response => {
+                            this.liked = response.data;
+                        }).catch(console.error);
+                    },
+                    onSave() {
+                        axios.get('/api/save/{{ $event->id  }}').then(response => {
+                            this.saved = response.data;
+                        }).catch(console.error);
+                    },
+                    onJoin() {
+                        axios.get('/api/booking/{{ $event->id  }}').then(response => {
+                            this.joined = response.data;
+                        }).catch(console.error);
+                    }
+                }">
+                    <button type="button"
+                            class="flex items-center gap-2 transition-all bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-s-lg border-r"
+                            @click="onLike"
+                            :class="liked && 'bg-red-500 hover:bg-red-600'">
+                        <span x-text="liked ? @js(__('Deslike')) : @js(__('Like'))"></span>
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                    <button type="button"
+                            class="flex items-center gap-2 transition-all bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3 border-r"
+                            @click="onSave"
+                            :class="saved && 'bg-red-500 hover:bg-red-600'">
+                        <span x-text="saved ? @js(__('Unsave')) : @js(__('Save'))"></span>
+                        <i class="fa-solid fa-bookmark"></i>
+                    <button type="button"
+                            class="flex items-center gap-2 transition-all bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3 border-r"
+                            @click="onJoin"
+                            :class="joined && 'bg-red-500 hover:bg-red-600'">
+                        <span x-text="joined ? @js(__('Leave')) : @js(__('Join'))"></span>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                    @if($event->user->id === auth()->user()->id)
+                        <a href="{{ route('events.edit', $event->id) }}" class="flex items-center gap-2 transition-all bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-3 border-r">
+                            {{ __('Edit') }}
+                            <i class="fa-solid fa-edit"></i>
+                        </a>
+                    @endif
+                    <a href="{{ back()->getTargetUrl() }}" class="flex items-center gap-2 transition-all bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 rounded-e-lg">
+                        {{ __('Back') }}
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                </div>
+            @else
+                <a href="{{ back()->getTargetUrl() }}" class="flex items-center gap-2 transition-all bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 rounded-lg">
                     {{ __('Back') }}
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
-            </div>
+            @endauth
         </div>
     </x-slot>
 
@@ -46,18 +94,22 @@
                 </div>
             </div>
         </div>
-        <div class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8">
-            <div class="p-5 relative w-full flex justify-between items-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('Delete Event') }}</h3>
-                <button type="submit" form="event-delete-{{ $event->id }}" class="flex items-center gap-2 transition-all bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 rounded-lg">
-                    {{ __('Delete') }}
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
-            <form action="{{ route('events.destroy', $event) }}" method="post" id="event-delete-{{ $event->id }}">
-                @csrf
-                @method('DELETE')
-            </form>
-        </div>
+        @auth
+            @if($event->user->id === auth()->user()->id)
+                <div class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8">
+                    <div class="p-5 relative w-full flex justify-between items-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('Delete Event') }}</h3>
+                        <button type="submit" form="event-delete-{{ $event->id }}" class="flex items-center gap-2 transition-all bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 rounded-lg">
+                            {{ __('Delete') }}
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <form action="{{ route('events.destroy', $event) }}" method="post" id="event-delete-{{ $event->id }}">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            @endif
+        @endauth
     </div>
 </x-app-layout>

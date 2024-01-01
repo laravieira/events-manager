@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SavedEventController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
@@ -29,6 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('/events', EventController::class);
     Route::resource('/gallery', GalleryController::class);
+    Route::get('/api/like/{event}', [LikeController::class, 'create']);
+    Route::get('/api/save/{event}', [SavedEventController::class, 'create']);
+    Route::get('/api/booking/{event}', [BookingController::class, 'create']);
 });
+Route::GET('/events/{event:id}', [EventController::class, 'show'])->name('events.show');
 
 require __DIR__.'/auth.php';

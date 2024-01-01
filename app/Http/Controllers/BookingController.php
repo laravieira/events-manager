@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
+use App\Models\Event;
+use Illuminate\Database\Eloquent\Model;
 
 class BookingController extends Controller
 {
@@ -19,9 +21,18 @@ class BookingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Event $event): Model|false
     {
-        //
+        $booking = $event->bookings()->where('user_id', auth()->id())->first();
+        if ($booking) {
+            $booking->delete();
+            return false;
+        } else {
+            return $event->bookings()->create([
+                'user_id' => auth()->id(),
+                'tickets' => 1
+            ]);
+        }
     }
 
     /**
