@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 gap-4">
             @forelse($events as $event)
                 <div class="relative max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <img class="rounded-t-lg aspect-video object-cover w-full" src="{{ asset('storage/'.$event->image) }}" alt="" />
+                    <img class="rounded-t-lg aspect-video object-cover w-full" src="{{ asset($event->image) }}" alt="" />
                     <div class="p-5">
                         <div class="flex gap-4 items-end">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $event->name }}</h5>

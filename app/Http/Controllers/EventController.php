@@ -44,7 +44,7 @@ class EventController extends Controller
 
         $data = $request->validated();
 //      $data['image'] = Storage::putFile('public/events', $request->file('image'));
-        $data['image'] = $request->file('image')->store('public/events');
+        $data['image'] = $request->file('image')->store('events-manager/events');
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($request->name);
 
@@ -83,7 +83,7 @@ class EventController extends Controller
         if($request->hasFile('image')) {
             Storage::delete($event->image);
             // $data['image'] = Storage::putFile('public/events', $request->file('image'));
-            $data['image'] = $request->file('image')->store('public/events');
+            $data['image'] = $request->file('image')->store('events-manager/events');
         }
 
         $data['slug'] = Str::slug($request->name);

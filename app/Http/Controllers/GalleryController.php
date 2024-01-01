@@ -37,7 +37,7 @@ class GalleryController extends Controller
 
         $data = $request->validated();
         // $data['image'] = Storage::putFile('public/gallery', $request->file('image'));
-        $data['image'] = $request->file('image')->store('gallery', 'public');
+        $data['image'] = $request->file('image')->store('events-manager/gallery');
 
         auth()->user()->galleries()->create($data);
         return to_route('gallery.index');
@@ -70,7 +70,7 @@ class GalleryController extends Controller
         if($request->hasFile('image')) {
             Storage::delete($gallery->image);
             // $data['image'] = Storage::putFile('public/gallery', $request->file('image'));
-            $data['image'] = $request->file('image')->store('gallery', 'public');
+            $data['image'] = $request->file('image')->store('events-manager/gallery');
         }
         $gallery->update($data);
         return to_route('gallery.index');
