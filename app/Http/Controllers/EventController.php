@@ -63,6 +63,7 @@ class EventController extends Controller
             'liked' => $event->likes()->where('user_id', auth()->id())->first(),
             'saved' => $event->savedEvents()->where('user_id', auth()->id())->first(),
             'joined' => $event->bookings()->where('user_id', auth()->id())->first(),
+            'comments' => $event->comments()->with('user')->get()->sortByDesc('created_at'),
         ]);
     }
 

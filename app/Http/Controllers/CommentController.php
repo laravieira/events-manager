@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Models\Event;
+use Illuminate\Http\RedirectResponse;
 
 class CommentController extends Controller
 {
@@ -27,9 +29,13 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Event $event)
     {
-        //
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+
+        $event->comments()->create($data);
+        return back();
     }
 
     /**
@@ -59,8 +65,9 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment): RedirectResponse
     {
-        //
+        $comment->delete();
+        return back();
     }
 }

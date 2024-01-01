@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedEventController;
@@ -35,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/like/{event}', [LikeController::class, 'create']);
     Route::get('/api/save/{event}', [SavedEventController::class, 'create']);
     Route::get('/api/booking/{event}', [BookingController::class, 'create']);
+    Route::post('/api/comments/{event}', [CommentController::class, 'store'])->name('comments.store');
+    Route::put('/api/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/api/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 Route::GET('/events/{event:id}', [EventController::class, 'show'])->name('events.show');
 
