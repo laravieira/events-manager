@@ -10,8 +10,7 @@ class WelcomeController extends Controller
     public function index()
     {
         return view('welcome', [
-            'events' => Event::all()->load('country', 'city', 'user', 'tags')->sortByDesc('start_date'),
-            'galleries' => Gallery::all()->load('user')->sortByDesc('created_at')
+            'events' => Event::all()->load('country', 'city', 'user', 'tags')->sortByDesc('start_date')
         ]);
     }
 }
