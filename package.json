@@ -18,5 +18,10 @@
     },
     "dependencies": {
         "bootstrap": "^5.3.2"
+    },
+    "overrides": {
+        "vite": {
+            "rollup": "npm:@rollup/wasm-node"
+        }
     }
 }

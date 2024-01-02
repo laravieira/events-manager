@@ -16,7 +16,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 gap-4">
             @forelse($galleries as $gallery)
                 <div class="relative max-w-sm">
-                    <img class="rounded-t-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 aspect-video object-cover w-full" src="{{ asset($gallery->image) }}" alt="" />
+                    <img class="rounded-t-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 aspect-video object-cover w-full" src="{{ asset('https://raw.laravieira.me/'.$gallery->image) }}" alt="" />
                     <div class="p-2">
                         <p class="font-normal text-gray-700 dark:text-gray-400">{{ $gallery->caption }}</p>
                     </div>

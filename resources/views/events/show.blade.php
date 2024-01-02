@@ -69,7 +69,7 @@
     <div class="py-12 px-4 space-y-5">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex flex-wrap sm:flex-nowrap gap-4">
             <div class="bg-white w-full sm:basis-3/5 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
-                <img class="rounded-t-lg aspect-video object-cover w-full h-full" src="{{ asset($event->image) }}" alt="" />
+                <img class="rounded-t-lg aspect-video object-cover w-full h-full" src="{{ asset('https://raw.laravieira.me/'.$event->image) }}" alt="" />
             </div>
             <div class="relative sm:basis-2/5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-5">
