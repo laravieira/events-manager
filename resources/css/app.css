@@ -12,4 +12,8 @@
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
+
+    .side-space {
+        min-width: max(calc(100vw - 1280px) / 2, 0px);
+    }
 }

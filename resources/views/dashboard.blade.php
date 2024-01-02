@@ -3,10 +3,11 @@
         {{ __('Your Booked Events') }}
     </h2>
     <div class="py-12">
-        <div class="overflow-x-scroll no-scrollbar">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex gap-4">
+        <div class="overflow-x-scroll no-scrollbar flex">
+            <div class="flex gap-4">
+                <div class="side-space"></div>
                 @forelse($booking as $event)
-                    <div class="relative max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <div class="relative max-w-sm bg-white flex-shrink-0 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <img class="rounded-t-lg aspect-video object-cover w-full" src="{{ asset($event->image) }}" alt="" />
                         <div class="p-5">
                             <div class="flex gap-4 items-end">
@@ -51,6 +52,7 @@
                         </h3>
                     </div>
                 @endforelse
+                <div class="side-space"></div>
             </div>
         </div>
     </div>
@@ -59,10 +61,11 @@
         {{ __('Your Saved Events') }}
     </h2>
     <div class="py-12">
-        <div class="overflow-x-scroll no-scrollbar">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 gap-4">
+        <div class="overflow-x-scroll no-scrollbar flex">
+            <div class="flex gap-4">
+                <div class="side-space"></div>
                 @forelse($saved as $event)
-                    <div class="relative max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <div class="relative max-w-sm bg-white flex-shrink-0 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <img class="rounded-t-lg aspect-video object-cover w-full" src="{{ asset($event->image) }}" alt="" />
                         <div class="p-5">
                             <div class="flex gap-4 items-end">
@@ -107,6 +110,7 @@
                         </h3>
                     </div>
                 @endforelse
+                <div class="side-space"></div>
             </div>
         </div>
     </div>
@@ -115,10 +119,11 @@
         {{ __('Your Liked Events') }}
     </h2>
     <div class="py-12">
-        <div class="overflow-x-scroll no-scrollbar">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 gap-4">
+        <div class="overflow-x-scroll no-scrollbar flex">
+            <div class="flex gap-4">
+                <div class="side-space"></div>
                 @forelse($liked as $event)
-                    <div class="relative max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <div class="relative max-w-sm bg-white flex-shrink-0 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <img class="rounded-t-lg aspect-video object-cover w-full" src="{{ asset($event->image) }}" alt="" />
                         <div class="p-5">
                             <div class="flex gap-4 items-end">
@@ -163,7 +168,9 @@
                         </h3>
                     </div>
                 @endforelse
+                <div class="side-space"></div>
             </div>
+            <div></div>
         </div>
     </div>
 </x-app-layout>
