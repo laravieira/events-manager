@@ -15,7 +15,7 @@ class GalleryController extends Controller
     public function index()
     {
         return view('gallery.index', [
-            'galleries' => auth()->user()->galleries,
+            'galleries' => auth()->user()->galleries()->with('user')->get()->sortByDesc('created_at'),
         ]);
     }
 
@@ -66,6 +66,7 @@ class GalleryController extends Controller
      */
     public function update(UpdateGalleryRequest $request, Gallery $gallery)
     {
+        $this->authorize('update', $gallery);
         $data = $request->validated();
         if($request->hasFile('image')) {
             Storage::delete($gallery->image);
@@ -81,6 +82,7 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
+        $this->authorize('delete', $gallery);
         Storage::delete($gallery->image);
         $gallery->delete();
         return back();

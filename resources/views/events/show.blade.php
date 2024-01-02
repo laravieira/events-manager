@@ -46,12 +46,12 @@
                         <span x-text="joined ? @js(__('Leave')) : @js(__('Join'))"></span>
                         <i class="fa-solid fa-user-plus"></i>
                     </button>
-                    @if($event->user->id === auth()->user()->id)
+                    @can('update', $event)
                         <a href="{{ route('events.edit', $event->id) }}" class="flex gap-3 items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-l border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                             {{ __('Edit') }}
                             <i class="fa-solid fa-edit"></i>
                         </a>
-                    @endif
+                    @endcan
                     <a href="{{ back()->getTargetUrl() }}" class="flex gap-3 items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-l border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
                         {{ __('Back') }}
                         <i class="fa-solid fa-arrow-left"></i>
@@ -95,7 +95,7 @@
             </div>
         </div>
         @auth
-            @if($event->user->id === auth()->user()->id)
+            @can('delete', $event)
                 <div class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8">
                     <div class="p-5 relative w-full flex justify-between items-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('Delete Event') }}</h3>
@@ -109,7 +109,7 @@
                         @method('DELETE')
                     </form>
                 </div>
-            @endif
+            @endcan
         @endauth
         <div class="max-w-7xl w-full mx-auto sm:px-6 lg:px-8" x-data="{
             open: @js($errors->any()),
@@ -150,7 +150,7 @@
                                 <time class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">{{ $comment->created_at }}</time>
                             </div>
                             <p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">{{ $comment->content }}</p>
-                            @if($comment->user->id === auth()->id())
+                            @can('delete', $comment)
                                 <div class="inline-flex rounded-md shadow-sm absolute top-2 right-2" role="group">
 {{--                                    <a href="{{ route('comments.update', $comment->id) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-green-100 hover:text-green-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">--}}
 {{--                                        <i class="fa-solid fa-edit"></i>--}}
@@ -163,7 +163,7 @@
                                         @method('DELETE')
                                     </form>
                                 </div>
-                            @endif
+                            @endcan
                         </li>
                     @empty
                         <li class="relative mb-10 ms-4">

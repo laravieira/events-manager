@@ -84,6 +84,7 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
+        $this->authorize('update', $event);
         $data = $request->validated();
 
         if($request->hasFile('image')) {
@@ -104,6 +105,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
+        $this->authorize('delete', $event);
         Storage::delete($event->image);
         $event->tags()->detach();
         $event->delete();

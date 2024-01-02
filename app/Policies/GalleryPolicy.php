@@ -37,7 +37,7 @@ class GalleryPolicy
      */
     public function update(User $user, Gallery $gallery): bool
     {
-        //
+        return $user->id === $gallery->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class GalleryPolicy
      */
     public function delete(User $user, Gallery $gallery): bool
     {
-        //
+        return $user->id === $gallery->user_id;
     }
 
     /**
