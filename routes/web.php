@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SavedEventController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\GalleryController;
 */
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/galleries', [GalleriesController::class, 'index'])->name('galleries');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

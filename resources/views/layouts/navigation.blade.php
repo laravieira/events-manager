@@ -19,12 +19,12 @@
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
-                            {{ __('Events') }}
+                            {{ __('My Events') }}
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('gallery.index')" :active="request()->routeIs('gallery.*')">
-                            {{ __('Galleries') }}
+                            {{ __('My Galleries') }}
                         </x-nav-link>
                     </div>
                 @endauth

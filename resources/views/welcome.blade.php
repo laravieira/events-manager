@@ -1,5 +1,8 @@
 <x-base-layout>
     <div class="py-12">
+        <h2 class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-10 font-semibold text-4xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Events') }}
+        </h2>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-3 gap-4">
             @forelse($events as $event)
                 <div class="relative max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -36,9 +39,6 @@
                     <h3 class="text-3xl text-gray-400 font-bold dark:text-white">
                         {{ __('There are no events yet :/') }}
                     </h3>
-                    <p class="mb-3 text-gray-300 dark:text-gray-600">
-                        {{ __('Click on the new button and create your first event.') }}
-                    </p>
                 </div>
             @endforelse
         </div>
