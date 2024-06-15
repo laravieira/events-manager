@@ -1,32 +1,40 @@
-FROM php:8.2-apache
-
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y \
-    libzip-dev \
-    zip
-
-# Enable mod_rewrite
-RUN a2enmod rewrite
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql zip
-
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# Copy the application code
-COPY . /var/www/html
-
-# Set the working directory
+FROM serversideup/php:8.2-fpm-nginx-v2.2.1 as base
 WORKDIR /var/www/html
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-interaction --no-plugins --no-scripts --prefer-dist
 
-# Install project dependencies
-RUN composer install
+FROM node:20 as static-assets
+WORKDIR /app
+COPY . .
+COPY --from=base --chown=9999:9999 /var/www/html .
+RUN npm install
+RUN npm run build
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+FROM serversideup/php:8.2-fpm-nginx-v2.2.1
+
+WORKDIR /var/www/html
+
+RUN apt-get update
+
+COPY --from=base --chown=9999:9999 /var/www/html .
+
+COPY --chown=9999:9999 . .
+RUN composer dump-autoload
+
+COPY --from=static-assets --chown=9999:9999 /app/public/build ./public/build
+COPY --chmod=755 docker/prod/etc/s6-overlay/ /etc/s6-overlay/
+
+RUN php artisan route:cache
+RUN php artisan view:cache
+
+RUN echo "alias ll='ls -al'" >>/etc/bash.bashrc
+RUN echo "alias a='php artisan'" >>/etc/bash.bashrc
+RUN echo "alias logs='tail -f storage/logs/laravel.log'" >>/etc/bash.bashrc
+
+RUN mkdir -p /usr/local/bin
+
+RUN { \
+    echo 'upload_max_filesize=256M'; \
+    echo 'post_max_size=256M'; \
+  } > /etc/php/current_version/cli/conf.d/upload-limits.ini
