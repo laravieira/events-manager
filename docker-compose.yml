@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  laravel:
+    image: serversideup/php:8.3-fpm-apache
+    container_name: laravel
+    restart: unless-stopped
+    build:
+      r
+    ports:
+      - "8080:8080"
+    environment:
+      - PHP_OPCACHE_ENABLE=1
