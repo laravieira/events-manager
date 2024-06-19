@@ -70,7 +70,7 @@ COPY --from=base --chown=www-data:www-data /var/www/html .
 COPY --from=static-assets --chown=www-data:www-data /app/public/build ./public/build
 COPY --chown=www-data:www-data . .
 
-RUN composer dump-autoload
+#RUN composer dump-autoload
 RUN php artisan route:cache
 RUN php artisan view:cache
 
